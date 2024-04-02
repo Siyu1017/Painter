@@ -39,8 +39,10 @@ module.exports = {
             filename: "index.html",
             template: './draw.html'
         }),
+        /*
         new WebpackObfuscator({
             rotateUnicodeArray: true
         })
+        */
     ],
 }
