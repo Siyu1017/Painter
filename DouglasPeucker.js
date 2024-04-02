@@ -1,0 +1,90 @@
+function getDistance(pt, lineStart, lineEnd) {
+    var dx = lineEnd.x - lineStart.x;
+    var dy = lineEnd.y - lineStart.y;
+    var normalLength = Math.sqrt(dx * dx + dy * dy);
+    var distance = (dy * pt.x - dx * pt.y + lineEnd.x * lineStart.y - lineEnd.y * lineStart.x) / normalLength;
+    return Math.abs(distance);
+}
+
+/* Original function
+function simplifyDP(points, epsilon) {
+    var dmax = 0;
+    var index = 0;
+
+    for (var i = 1; i < points.length - 1; i++) {
+        var d = getDistance(points[i], points[0], points[points.length - 1]);
+        if (d > dmax) {
+            dmax = d;
+            index = i;
+        }
+    }
+
+    if (dmax > epsilon) {
+        var left = points.slice(0, index + 1);
+        var right = points.slice(index);
+        var simplifiedLeft = simplifyDP(left, epsilon);
+        var simplifiedRight = simplifyDP(right, epsilon);
+
+        return simplifiedLeft.slice(0, simplifiedLeft.length - 1).concat(simplifiedRight);
+    }
+
+    return [points[0], points[points.length - 1]];
+}
+*/
+
+function simplifyDP(points, epsilon) {
+    const start = points[0];
+    const end = points[points.length - 1];
+
+    /*
+    const minX = Math.min(...points.map(p => p.x));
+    const minY = Math.min(...points.map(p => p.y));
+    const maxX = Math.max(...points.map(p => p.x));
+    const maxY = Math.max(...points.map(p => p.y));
+    */
+
+    const simplifiedPoints = [start];
+
+    for (let i = 1; i < points.length - 1; i++) {
+        const point = points[i];
+
+        const distance = getDistance(point, start, end);
+
+        if (distance > epsilon) {
+            simplifiedPoints.push(point);
+        }
+    }
+
+    simplifiedPoints.push(end);
+
+    return simplifiedPoints;
+}
+
+function DouglasPeucker(points, ctx) {
+    if (points.length == 1) {
+        ctx.beginPath();
+        ctx.arc(points[0].x, points[0].y, Datas.Style.Stroke.Size / 2, 0, 2 * Math.PI, true);
+        ctx.fill();
+        return;
+    } else if (points.length == 2) {
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        ctx.lineTo(points[1].x, points[1].y);
+        ctx.stroke();
+        return;
+    } else if (points.length == 0) return;
+
+    var simplifiedPoints = simplifyDP(points, 5); // 调整 epsilon 的值以控制简化程度
+
+    ctx.beginPath();
+    ctx.moveTo(simplifiedPoints[0].x, simplifiedPoints[0].y);
+
+    for (var i = 1; i < simplifiedPoints.length - 1; i++) {
+        var xc = (simplifiedPoints[i].x + simplifiedPoints[i + 1].x) / 2;
+        var yc = (simplifiedPoints[i].y + simplifiedPoints[i + 1].y) / 2;
+        ctx.quadraticCurveTo(simplifiedPoints[i].x, simplifiedPoints[i].y, xc, yc);
+    }
+
+    ctx.lineTo(simplifiedPoints[simplifiedPoints.length - 1].x, simplifiedPoints[simplifiedPoints.length - 1].y);
+    ctx.stroke();
+}

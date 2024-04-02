@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw - Untitled</title>
+    <link rel="stylesheet" href="./draw.css">
+</head>
+
+<body>
+    <div class="editor">
+        <div class="top">
+            <div class="action-bar unloaded" id="actions">
+                <div class="action" data-action="file">
+                    <div class="action-title">File</div>
+                    <div class="action-popup" action-popup="file">
+                        <div class="item" disabled>
+                            <div class="command-name">Open ( unfinished )</div>
+                            <div class="command-key">Ctrl+O</div>
+                        </div>
+                        <div class="separation-line"></div>
+                        <div class="item" disabled>
+                            <div class="command-name">Save ( unfinished )</div>
+                            <div class="command-key">Ctrl+S</div>
+                        </div>
+                        <div class="item popup" id="download">
+                            <div class="command-name">Download</div>
+                            <div class="command-key">Ctrl+Shift+S</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action" data-action="edit">
+                    <div class="action-title">Edit</div>
+                    <div class="action-popup" action-popup="edit">
+                        <div class="item" disabled id="undo">
+                            <div class="command-name">Undo</div>
+                            <div class="command-key">Ctrl+Z</div>
+                        </div>
+                        <div class="item" disabled id="redo">
+                            <div class="command-name">Redo</div>
+                            <div class="command-key">Ctrl+Y</div>
+                        </div>
+                        <div class="separation-line"></div>
+                        <div class="item" disabled>
+                            <div class="command-name">Cut ( unfinished )</div>
+                            <div class="command-key">Ctrl+X</div>
+                        </div>
+                        <div class="item" disabled>
+                            <div class="command-name">Copy ( unfinished )</div>
+                            <div class="command-key">Ctrl+C</div>
+                        </div>
+                        <div class="item" disabled>
+                            <div class="command-name">Paste ( unfinished )</div>
+                            <div class="command-key">Ctrl+V</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action" data-action="version">
+                    <div class="action-title">Autocorrect</div>
+                    <div class="action-popup" action-popup="version" data-select-group-parent="algorithm">
+                        <div class="item select" data-select-group="algorithm" data-select-value="">
+                            <div class="command-name">Close</div>
+                        </div>
+                        <div class="item select selected" data-select-group="algorithm"
+                            data-select-value="DouglasPeucker">
+                            <div class="command-name">Douglas-Peucker algorithm</div>
+                        </div>
+                        <div class="item select" data-select-group="algorithm" data-select-value="RamerDouglasPeucker">
+                            <div class="command-name">Ramer-Douglas-Peucker algorithm</div>
+                        </div>
+                        <div class="item select" data-select-group="algorithm" data-select-value="VisvalingamWhyatt">
+                            <div class="command-name">Visvalingam-Whyatt algorithm</div>
+                        </div>
+                        <!--div class="item select">Smooth Line Version 1.0.1 ( dev )</div-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="mode-bar unloaded" id="modes">
+                <div class="modes">
+                    <div class="mode" data-mode="select">
+                        <div class="mode-icon">
+                            <svg class="svg-24" height="24" preserveaspectratio="xMidYMid meet" viewbox="0 0 100 100"
+                                width="24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" fill="currentColor">
+                                <path class="svg-stroke-primary"
+                                    d="M64,64,56.8,82.1,42.3,42.3,82.1,56.8Zm0,0L82.1,82.1M35.8,17.9l2.8,10.5M28.4,38.6,17.9,35.8M60.2,24.4l-7.6,7.7M32.1,52.6l-7.7,7.6"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mode active" data-mode="draw" data-popup="pen">
+                        <div class="mode-icon">
+                            <svg class="svg-24" height="100" preserveaspectratio="xMidYMid meet" viewbox="0 0 100 100"
+                                width="100" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
+                                <path class="svg-stroke-primary"
+                                    d="M61.5,25.9,74,38.5M66.8,20.6A8.9,8.9,0,0,1,79.3,33.2L30.5,82H18.1V69.3Z"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="mode-popup" popup-name="pen">
+                            <div class="pen-size group">
+                                <label>Size ( px )</label>
+                                <input type="number" min="1" max="48" id="size">
+                            </div>
+                            <div class="pen-color group">
+                                <label>Color ( current color : <span class="preview-color" id="preview-color"></span> )</label>
+                                <div class="colors" id="colors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="helps">
+
+                </div>
+            </div>
+            <div class="painter unloaded" id="painter">
+                <div class="painter-mask" id="mask">
+                    <canvas id="mp" hidden class="canvas"></canvas>
+                    <canvas id="select" hidden class="canvas"></canvas>
+                    <canvas id="canvas" hidden class="canvas"></canvas>
+                    <canvas id="image" hidden class="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./draw.js" defer></script>
+</body>
+
+</html>
