@@ -30,7 +30,7 @@ function simplify(points, epsilon) {
     return [points[0], points[points.length - 1]];
 }
 
-function RamerDouglasPeucker(points, ctx) {
+export default function RamerDouglasPeucker(points, ctx) {
     if (points.length == 1) {
         ctx.beginPath();
         ctx.arc(points[0].x, points[0].y, Datas.Style.Stroke.Size / 2, 0, 2 * Math.PI, true);

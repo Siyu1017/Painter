@@ -1,4 +1,4 @@
-function createHDCanvas(canvas, w, h) {
+export default function createHDCanvas(canvas, w, h) {
     const ratio = window.devicePixelRatio || 1;
     canvas.width = w * ratio;
     canvas.height = h * ratio;
