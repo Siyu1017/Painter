@@ -11,7 +11,8 @@ module.exports = {
         index: ['./draw.js', './draw.css']
     },
     mode: process.env.NODE_ENV,
-    devtool: 'hidden-source-map',
+    // devtool: 'hidden-source-map',
+    devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
