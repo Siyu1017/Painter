@@ -242,14 +242,14 @@ colors.forEach((c, i) => {
     $("#colors").appendChild(li);
 })
 
-function drawPoints(el, value, b, a) {
+function drawPoints(el, value, reserve, useCurrent) {
     var canvas = el;
     var data = value;
-    if (b != true) {
+    if (reserve != true) {
         createHDCanvas(canvas, Datas.CanvasSize.width, Datas.CanvasSize.height);
     }
     const ctx = canvas.getContext("2d");
-    if (a == 1) {
+    if (useCurrent == 1) {
         ctx.lineWidth = Datas.Style.Stroke.Size;
         ctx.strokeStyle = Datas.Style.Stroke.Color;
         ctx.fillStyle = Datas.Style.Stroke.Color;
@@ -265,45 +265,43 @@ function drawPoints(el, value, b, a) {
     ctx.imageSmoothingEnabled = true;
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
-    if (b == true) {
+    if (data.points.length == 0) return;
+    if (data.points.length == 1) {
+        ctx.beginPath();
+        ctx.arc(data.points[0].x, data.points[0].y, Datas.Style.Stroke.Size / 2, 0, 2 * Math.PI, true);
+        ctx.fill();
+        return;
+    }
+    if (data.points.length == 2) {
+        ctx.beginPath();
+        ctx.moveTo(data.points[0].x, data.points[0].y);
+        ctx.lineTo(data.points[1].x, data.points[1].y);
+        ctx.stroke();
+        return;
+    } 
+    if (reserve == true) {
         if (data.algorithm == "RamerDouglasPeucker") {
             return RamerDouglasPeucker(data.points, ctx);
         } else if (data.algorithm == "DouglasPeucker") {
             return DouglasPeucker(data.points, ctx)
         } else if (data.algorithm == "VisvalingamWhyatt") {
             return VisvalingamWhyatt(data.points, ctx)
-        } else {
-
-        }
+        } 
     }
     try {
-        if (data.points.length == 0) return;
-        if (data.points.length == 1) {
+        for (let i = 0; i < data.points.length - 1; i++) {
             ctx.beginPath();
-            ctx.arc(data.points[0].x, data.points[0].y, Datas.Style.Stroke.Size / 2, 0, 2 * Math.PI, true);
-            ctx.fill();
-            return;
-        } else if (data.points.length == 2) {
-            ctx.beginPath();
-            ctx.moveTo(data.points[0].x, data.points[0].y);
-            ctx.lineTo(data.points[1].x, data.points[1].y);
-            ctx.stroke();
-            return;
-        } else {
-            for (let i = 0; i < data.points.length - 1; i++) {
-                ctx.beginPath();
-                if (i == 0) {
-                    ctx.moveTo(data.points[i].x, data.points[i].y)
-                    ctx.quadraticCurveTo(data.points[i + 1].x, data.points[i + 1].y, data.points[i + 1].x + (data.points[i + 2].x - data.points[i + 1].x) / 2, data.points[i + 1].y + (data.points[i + 2].y - data.points[i + 1].y) / 2);
-                } else if (i == data.points.length - 2) {
-                    ctx.moveTo(data.points[i].x + (data.points[i + 1].x - data.points[i].x) / 2, data.points[i].y + (data.points[i + 1].y - data.points[i].y) / 2)
-                    ctx.quadraticCurveTo(data.points[i + 1].x, data.points[i + 1].y, data.points[i].x + (data.points[i + 1].x - data.points[i].x) * 0.75, data.points[i].y + (data.points[i + 1].y - data.points[i].y) * 0.75);
-                } else {
-                    ctx.moveTo(data.points[i].x + (data.points[i + 1].x - data.points[i].x) / 2, data.points[i].y + (data.points[i + 1].y - data.points[i].y) / 2)
-                    ctx.quadraticCurveTo(data.points[i + 1].x, data.points[i + 1].y, data.points[i + 1].x + (data.points[i + 2].x - data.points[i + 1].x) / 2, data.points[i + 1].y + (data.points[i + 2].y - data.points[i + 1].y) / 2);
-                }
-                ctx.stroke();
+            if (i == 0) {
+                ctx.moveTo(data.points[i].x, data.points[i].y)
+                ctx.quadraticCurveTo(data.points[i + 1].x, data.points[i + 1].y, data.points[i + 1].x + (data.points[i + 2].x - data.points[i + 1].x) / 2, data.points[i + 1].y + (data.points[i + 2].y - data.points[i + 1].y) / 2);
+            } else if (i == data.points.length - 2) {
+                ctx.moveTo(data.points[i].x + (data.points[i + 1].x - data.points[i].x) / 2, data.points[i].y + (data.points[i + 1].y - data.points[i].y) / 2)
+                ctx.quadraticCurveTo(data.points[i + 1].x, data.points[i + 1].y, data.points[i].x + (data.points[i + 1].x - data.points[i].x) * 0.75, data.points[i].y + (data.points[i + 1].y - data.points[i].y) * 0.75);
+            } else {
+                ctx.moveTo(data.points[i].x + (data.points[i + 1].x - data.points[i].x) / 2, data.points[i].y + (data.points[i + 1].y - data.points[i].y) / 2)
+                ctx.quadraticCurveTo(data.points[i + 1].x, data.points[i + 1].y, data.points[i + 1].x + (data.points[i + 2].x - data.points[i + 1].x) / 2, data.points[i + 1].y + (data.points[i + 2].y - data.points[i + 1].y) / 2);
             }
+            ctx.stroke();
         }
     } catch (e) {
         console.log("Error :", e)

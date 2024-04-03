@@ -61,19 +61,6 @@ function simplifyDP(points, epsilon) {
 }
 
 export default function DouglasPeucker(points, ctx) {
-    if (points.length == 1) {
-        ctx.beginPath();
-        ctx.arc(points[0].x, points[0].y, Datas.Style.Stroke.Size / 2, 0, 2 * Math.PI, true);
-        ctx.fill();
-        return;
-    } else if (points.length == 2) {
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-        ctx.lineTo(points[1].x, points[1].y);
-        ctx.stroke();
-        return;
-    } else if (points.length == 0) return;
-
     var simplifiedPoints = simplifyDP(points, 5); // 调整 epsilon 的值以控制简化程度
 
     ctx.beginPath();

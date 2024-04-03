@@ -25,10 +25,12 @@ module.exports = {
             },
         ],
     },
+    /*
     optimization: {
         minimize: true,
         minimizer: [new TerserWebpackPlugin()],
     },
+    */
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
