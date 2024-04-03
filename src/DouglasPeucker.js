@@ -61,7 +61,7 @@ function simplifyDP(points, epsilon) {
 }
 
 export default function DouglasPeucker(points, ctx) {
-    var simplifiedPoints = simplifyDP(points, 5); // 调整 epsilon 的值以控制简化程度
+    var simplifiedPoints = simplifyDP(points, 5); 
 
     ctx.beginPath();
     ctx.moveTo(simplifiedPoints[0].x, simplifiedPoints[0].y);

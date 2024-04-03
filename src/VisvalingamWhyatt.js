@@ -5,13 +5,11 @@ function getTriangleArea(p1, p2, p3) {
 function simplifyVW(points, threshold) {
     var areas = [];
 
-    // 计算每个点的三角形面积
     for (var i = 1; i < points.length - 1; i++) {
         var area = getTriangleArea(points[i - 1], points[i], points[i + 1]);
         areas.push(area);
     }
 
-    // 根据面积排序，并删除面积最小的点
     while (areas.length > 0 && Math.min(...areas) < threshold) {
         var minIndex = areas.indexOf(Math.min(...areas));
         points.splice(minIndex + 1, 1);
@@ -22,7 +20,7 @@ function simplifyVW(points, threshold) {
 }
 
 export default function VisvalingamWhyatt(points, ctx) {
-    var simplifiedPoints = simplifyVW(points, 1); // 调整阈值的值以控制简化程度
+    var simplifiedPoints = simplifyVW(points, 1);
 
     ctx.beginPath();
     ctx.moveTo(simplifiedPoints[0].x, simplifiedPoints[0].y);
